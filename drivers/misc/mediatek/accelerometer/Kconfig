@@ -1,0 +1,7 @@
+config MTK_BMA222E_AUTO
+	bool "MTK_BMA222E_AUTO for MediaTek package"
+	default n
+
+config MTK_KXTJ2_1009_AUTO
+	bool "MTK_KXTJ2_1009_AUTO for MediaTek package"
+	default n
