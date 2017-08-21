@@ -229,10 +229,6 @@ unsigned int custom_pll_clock_remap(int input_mipi_clock)
 	return ret;
 }
 #endif
-static void lcm_mdelay(UINT32 ms)
-{
-    udelay(1000 * ms);
-}
 void DSI_Enable_Log(bool enable)
 {
 	dsi_log_on = enable;
@@ -2225,8 +2221,6 @@ DSI_STATUS DSI_handle_TE(void)
 	//data_array=0x00351504;
 	//DSI_set_cmdq(&data_array, 1, 1);
 
-	//lcm_mdelay(10);
-
 	// RACT
 	//data_array=1;
 	//OUTREG32(&DSI_REG->DSI_RACK, data_array);
@@ -2253,7 +2247,6 @@ DSI_STATUS DSI_handle_TE(void)
 	// wait TE Trigger status
 //	do
 //	{
-		lcm_mdelay(10);
 
 		data_array=INREG32(&DSI_REG->DSI_INTSTA);
 		DISP_LOG_PRINT(ANDROID_LOG_INFO, "DSI", "[DISP] DSI INT state : %x !! \n", data_array);
@@ -2780,22 +2773,17 @@ void DSI_lane0_ULP_mode(bool enter)
 		// suspend
 		tmp_reg1.L0_HS_TX_EN=0;
 		OUTREG32(&DSI_REG->DSI_PHY_LD0CON, AS_UINT32(&tmp_reg1));
-		lcm_mdelay(1);
 		tmp_reg1.L0_ULPM_EN=1;
 		OUTREG32(&DSI_REG->DSI_PHY_LD0CON, AS_UINT32(&tmp_reg1));
-		lcm_mdelay(1);
 	}
 	else {
 		// resume
 		tmp_reg1.L0_ULPM_EN=0;
 		OUTREG32(&DSI_REG->DSI_PHY_LD0CON, AS_UINT32(&tmp_reg1));
-		lcm_mdelay(1);
 		tmp_reg1.L0_WAKEUP_EN=1;
 		OUTREG32(&DSI_REG->DSI_PHY_LD0CON, AS_UINT32(&tmp_reg1));
-		lcm_mdelay(1);
 		tmp_reg1.L0_WAKEUP_EN=0;
 		OUTREG32(&DSI_REG->DSI_PHY_LD0CON, AS_UINT32(&tmp_reg1));
-		lcm_mdelay(1);
 	}
 }
 
